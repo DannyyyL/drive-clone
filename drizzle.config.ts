@@ -6,4 +6,12 @@ export default {
   schema: "./src/server/db/schema.ts",
   dialect: 'mysql',
   tablesFilter: ["drive-clone_*"],
+  dbCredentials: {
+    host: env.SINGLESTORE_HOST,
+    port: parseInt(env.SINGLESTORE_PORT),
+    user: env.SINGLESTORE_USER,
+    password: env.SINGLESTORE_PASS,
+    database: env.SINGLESTORE_DB_NAME,
+    ssl: {},
+  }
 } satisfies Config;
