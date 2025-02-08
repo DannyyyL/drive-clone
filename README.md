@@ -5,7 +5,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 Link: https://dandrive-clone.netlify.app/
 
 ## TODO
-- [ ] Set up database
+- [x] Set up database
 - [ ] Move folder open state to URL
 - [ ] Add auth
 - [ ] Add file uploading
