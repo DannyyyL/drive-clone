@@ -1,10 +1,28 @@
 import {db} from "~/server/db";
-import {files as filesSchema, folders as foldersSchema} from "~/server/db/schema";
+import {files as filesSchema, folders, folders as foldersSchema} from "~/server/db/schema";
 import DriveContents from "../../drive-contents";
+import { eq } from "drizzle-orm";
 
-export default async function GoogleDriveClone(){
-  const files = await db.select().from(filesSchema);
-  const folders = await db.select().from(foldersSchema);
+export default async function GoogleDriveClone(props: {
+  params: Promise<{ folderId: string}>;
+}){
+  const params = await props.params;
+
+  const parsedFolderId = parseInt(params.folderId);
+  if (isNaN(parsedFolderId)) {
+    return <div>Invalid folder ID</div>;
+  } 
+
+  const folders = await db
+    .select()
+    .from(foldersSchema)
+    .where(eq(foldersSchema.id, parsedFolderId));//selecting where folder schema id is equal to folder id
+
+  const files = await db
+    .select()
+    .from(filesSchema)
+    .where(eq(filesSchema.id, parsedFolderId));
+
   return <DriveContents files={files} folders={folders} />
 }
 
