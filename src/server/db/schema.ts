@@ -1,3 +1,4 @@
+import "server-only";
 import { text, int, bigint, index, singlestoreTableCreator } from "drizzle-orm/singlestore-core";
 
 export const createTable = singlestoreTableCreator(
