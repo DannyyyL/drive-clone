@@ -1,10 +1,10 @@
 import { type Config, defineConfig } from "drizzle-kit";
-
 import { env } from "~/env";
 
-export default {
+export default defineConfig({
   schema: "./src/server/db/schema.ts",
-  dialect: 'mysql',
+  //Assert the dialect as "singlestore" even if TS doesn't expect it
+  dialect: 'singlestore' as Config['dialect'], 
   tablesFilter: ["drive-clone_*"],
   dbCredentials: {
     host: env.SINGLESTORE_HOST,
@@ -14,4 +14,4 @@ export default {
     database: env.SINGLESTORE_DB_NAME,
     ssl: {},
   }
-} satisfies Config;
+});
