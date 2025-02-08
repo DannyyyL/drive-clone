@@ -6,7 +6,7 @@ Link: https://dandrive-clone.netlify.app/
 
 ## TODO
 - [x] Set up database
-- [ ] Move folder open state to URL
+- [x] Move folder open state to URL
 - [ ] Add auth
 - [ ] Add file uploading
 
