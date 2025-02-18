@@ -1,7 +1,7 @@
 import "server-only";
 
 import {db} from "~/server/db";
-import {files_table as filesSchema, folders_table as foldersSchema, DB_FileType} from "~/server/db/schema";
+import {files_table as filesSchema, folders_table as foldersSchema, type DB_FileType} from "~/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const QUERIES = {
@@ -9,14 +9,15 @@ export const QUERIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.id, folderId));//selecting where folder schema id is equal to folder id
+      .where(eq(foldersSchema.id, folderId))//selecting where folder schema id is equal to folder id
+      .orderBy(foldersSchema.id);
   },
   getFiles: function(folderId: number){
     return db
       .select()
       .from(filesSchema)
-      .where(eq(filesSchema.id, folderId));
-
+      .where(eq(filesSchema.id, folderId))
+      .orderBy(filesSchema.id);
   },
   getAllParentsForFolder: async function(folderId: number) {
     const parents = [];
