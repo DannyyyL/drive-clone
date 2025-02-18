@@ -63,7 +63,7 @@ export default function GoogleDriveClone(props: {
           </ul>
         </div>
         <UploadButton 
-          endpoint="imageUploader" 
+          endpoint="driveUploader" 
           onClientUploadComplete={() => {
             navigate.refresh();
           }} 
