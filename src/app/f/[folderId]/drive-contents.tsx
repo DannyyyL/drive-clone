@@ -2,7 +2,7 @@
 
 import { Upload, ChevronRight } from "lucide-react"
 import { FileRow, FolderRow } from "./file-row"
-import type { files_table, folders_table } from "../server/db/schema";
+import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link"
 import { SignedOut, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/components/uploadthing";
