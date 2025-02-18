@@ -8,5 +8,7 @@ Link: https://dandrive-clone.netlify.app/
 - [x] Add auth
 - [x] Add file uploading
 - [ ] Add analytics
+- [ ] Add delete
+- [ ] Homepage
 
 
