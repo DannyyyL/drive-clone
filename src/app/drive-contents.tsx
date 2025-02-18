@@ -5,15 +5,15 @@ import { FileRow, FolderRow } from "./file-row"
 import type { files_table, folders_table } from "../server/db/schema";
 import Link from "next/link"
 import { SignedOut, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
+import { UploadButton } from "~/components/uploadthing";
+import { useRouter } from "next/navigation";
 
 export default function GoogleDriveClone(props: {
   files: (typeof files_table.$inferSelect)[];
   folders: (typeof folders_table.$inferSelect)[];
   parents: (typeof folders_table.$inferSelect)[];
 }) {
-  const handleUpload = () => {
-    alert("Upload functionality would be implemented here")
-  };
+  const navigate = useRouter();
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
@@ -54,16 +54,19 @@ export default function GoogleDriveClone(props: {
           </div>
           <ul>
             {props.folders.map((folder) => (
-              <FolderRow 
-                key={folder.id} 
-                folder={folder} 
-              />
+              <FolderRow key={folder.id} folder={folder} />
             ))}
             {props.files.map((file) => (
               <FileRow key={file.id} file={file} />
             ))}
           </ul>
         </div>
+        <UploadButton 
+          endpoint="imageUploader" 
+          onClientUploadComplete={() => {
+            navigate.refresh();
+          }} 
+        />
       </div>
     </div>
   )
