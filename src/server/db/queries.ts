@@ -9,14 +9,14 @@ export const QUERIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.id, folderId))//selecting where folder schema id is equal to folder id
+      .where(eq(foldersSchema.parent, folderId))//selecting where folder schema id is equal to folder id
       .orderBy(foldersSchema.id);
   },
   getFiles: function(folderId: number){
     return db
       .select()
       .from(filesSchema)
-      .where(eq(filesSchema.id, folderId))
+      .where(eq(filesSchema.parent, folderId))
       .orderBy(filesSchema.id);
   },
   getAllParentsForFolder: async function(folderId: number) {
@@ -71,5 +71,36 @@ export const MUTATIONS = {
       ...input.file,
       ownerId: input.userId,
     });
+  },
+
+  onboardUser: async function (userId: string){
+    const rootFolder = await db
+    .insert(foldersSchema)
+    .values({
+      name: "Root",
+      parent: null,
+      ownerId: userId,
+    }).$returningId();
+
+    const rootFolderId = rootFolder[0]!.id;
+
+    await db
+    .insert(foldersSchema)
+    .values([
+    {
+      name: "Trash",
+      parent: rootFolderId,
+      ownerId: userId,
+    },{
+      name: "Shared",
+      parent: rootFolderId,
+      ownerId: userId,
+    },{
+      name: "Documents",
+      parent: rootFolderId,
+      ownerId: userId,
+    }])
+
+    return rootFolder;
   },
 };
