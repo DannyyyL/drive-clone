@@ -8,5 +8,3 @@ Link: https://dandrive-clone.netlify.app/
 - [ ] Create folder
 - [ ] Delete folder
 - [ ] General UI tweaks
-
-
