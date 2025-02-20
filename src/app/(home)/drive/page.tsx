@@ -22,7 +22,8 @@ export default async function DrivePage() {
           return redirect("/sign-in");
         }
 
-        const rootFolderId = await MUTATIONS.onboardUser(session.userId);
+        const rootFolder = await MUTATIONS.onboardUser(session.userId);
+        const rootFolderId = rootFolder[0]!.id;
 
         return redirect(`/f/${rootFolderId}`);
       }}>
