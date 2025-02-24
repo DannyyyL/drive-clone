@@ -1,6 +1,6 @@
 # Drive Clone
 
-Link: https://dandrive-clone.netlify.app/
+A Google Drive clone built with React, Next.js, Clerk, Drizzle ORM, Singlestore, and much more.
 
 ## Extra Features
 
