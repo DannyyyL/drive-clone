@@ -24,18 +24,25 @@ export default function GoogleDriveClone(props: {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-row space-x-1.5 mb-4">
           <button onClick={() => setColor("bg-gray-900")}>
-            <Circle className="border-2 rounded-full" color="#111827" fill="#111827"/>
+            <Circle 
+              className={`border-2 rounded-full ${(color=="bg-gray-900") ? 'border-white' : 'border-none'}`} 
+              color="#111827" fill="#111827"
+            />
           </button>
           <button onClick={() => setColor("bg-green-300")}>
-            <Circle className="border-2 rounded-full" color="#86EFAC" fill="#86EFAC"/>
+            <Circle 
+              className={`border-2 rounded-full ${(color=="bg-green-300") ? 'border-white' : 'border-none'}`}
+              color="#86EFAC" fill="#86EFAC"/>
           </button>
           <button onClick={() => setColor("bg-rose-400")}>
-            <Circle className="border-2 rounded-full" color="#FB7185" fill="#FB7185"/>
+            <Circle 
+              className={`border-2 rounded-full ${(color=="bg-rose-400") ? 'border-white' : 'border-none'}`}
+              color="#FB7185" fill="#FB7185"/>
           </button>
         </div>
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center bg-gray-800 rounded-lg px-4 py-2">
-            <Link href="/f/1" className="text-gray-300 hover:text-white mr-2">
+            <Link href="..\"className="text-gray-300 hover:text-white mr-2">
               My Drive
             </Link>
             {props.parents.map((folder, index) => (
