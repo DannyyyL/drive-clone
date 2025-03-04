@@ -4,6 +4,6 @@ A Google Drive clone built with React, Next.js, Clerk, Drizzle ORM, Singlestore,
 
 ## Extra Features
 
-- [ ] Color options
+- [x] Color options
 - [ ] Create/Delete folder
 - [ ] General UI tweaks
