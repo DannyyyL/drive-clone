@@ -20,7 +20,7 @@ export default function GoogleDriveClone(props: {
 
   const [color, setColor] = useState<string>(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('background-color') || "bg-gray-900";
+      return localStorage.getItem('background-color') ?? "bg-gray-900";
     }
     return "bg-gray-900";
   });
