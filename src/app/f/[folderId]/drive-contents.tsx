@@ -7,7 +7,8 @@ import Link from "next/link"
 import { SignedOut, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/components/uploadthing";
 import { useRouter } from "next/navigation";
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { Button } from "~/components/ui/button";
 
 export default function GoogleDriveClone(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -17,24 +18,43 @@ export default function GoogleDriveClone(props: {
 }) {
   const navigate = useRouter();
 
-  const [color, setColor] = useState("bg-gray-900");
+  const [color, setColor] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('background-color') || "bg-gray-900";
+    }
+    return "bg-gray-900";
+  });
+
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('background-color', newColor);
+    }
+  };
+
+  useEffect(() => {
+    const savedColor = localStorage.getItem('background-color');
+    if (savedColor) {
+      setColor(savedColor);
+    }
+  }, []);
 
   return (
     <div className={`min-h-screen ${color} text-gray-100 p-8`}>
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-row space-x-1.5 mb-4">
-          <button onClick={() => setColor("bg-gray-900")}>
+          <button onClick={() => handleColorChange("bg-gray-900")}>
             <Circle 
               className={`border-2 rounded-full ${(color=="bg-gray-900") ? 'border-white' : 'border-none'}`} 
               color="#111827" fill="#111827"
             />
           </button>
-          <button onClick={() => setColor("bg-green-300")}>
+          <button onClick={() => handleColorChange("bg-green-300")}>
             <Circle 
               className={`border-2 rounded-full ${(color=="bg-green-300") ? 'border-white' : 'border-none'}`}
               color="#86EFAC" fill="#86EFAC"/>
           </button>
-          <button onClick={() => setColor("bg-rose-400")}>
+          <button onClick={() => handleColorChange("bg-rose-400")}>
             <Circle 
               className={`border-2 rounded-full ${(color=="bg-rose-400") ? 'border-white' : 'border-none'}`}
               color="#FB7185" fill="#FB7185"/>
@@ -84,16 +104,21 @@ export default function GoogleDriveClone(props: {
             ))}
           </ul>
         </div>
-        <UploadButton 
-          endpoint="driveUploader" 
-          onClientUploadComplete={() => {
-            navigate.refresh();
-          }} 
+        <div className="flex items-center justify-center gap-4">
+          <UploadButton 
+            endpoint="driveUploader" 
+            onClientUploadComplete={() => {
+              navigate.refresh();
+            }} 
 
-          input={{
-            folderId: props.currentFolderId,
-          }}
-        />
+            input={{
+              folderId: props.currentFolderId,
+            }}
+          />
+          <Button variant="default">
+            Create Folder
+          </Button>
+        </div>
       </div>
     </div>
   )

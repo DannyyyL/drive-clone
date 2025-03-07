@@ -2,7 +2,7 @@
 
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
-import { files_table } from "./db/schema";
+import { files_table, folders_table } from "./db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { UTApi } from "uploadthing/server";
 import { cookies } from "next/headers";
@@ -43,3 +43,32 @@ export async function deleteFile(fileId: number) {
   return {success: true};
 }
 
+export async function deleteFolder(folderId: number){
+  const session = await auth();
+  if (!session.userId) {
+    return {error: "Unauthorized"};
+  }
+
+  const [folder] = await db
+    .select()
+    .from(folders_table)
+    .where(
+      and(eq(folders_table.id, folderId), eq(folders_table.ownerId, session.userId))
+    );
+  
+    if (!folder){
+      return {error: "Folder not found"};
+    }
+
+    const dbDeleteResult = await db
+      .delete(folders_table)
+      .where(eq(folders_table.id, folderId));
+    
+    console.log(dbDeleteResult);
+
+    const c = await cookies();
+
+    c.set("force-refresh", JSON.stringify(Math.random()));
+
+    return {success: true};
+}
