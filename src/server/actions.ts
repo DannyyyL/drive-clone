@@ -1,5 +1,6 @@
 "use server";
 
+import { MUTATIONS } from "./db/queries";
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
 import { files_table, folders_table } from "./db/schema";
@@ -71,4 +72,33 @@ export async function deleteFolder(folderId: number){
     c.set("force-refresh", JSON.stringify(Math.random()));
 
     return {success: true};
+}
+
+export async function createFolder(name: string, parentId: number) {
+  const session = await auth();
+  if (!session.userId) {
+    return {error: "Unauthorized"};
+  }
+
+  if (!name || name.trim() === "") {
+    return {error: "Folder name is required"};
+  }
+
+  try {
+    const newFolder = await MUTATIONS.createFolder({
+      folder: {
+        name: name.trim(),
+        parent: parentId,
+      },
+      userId: session.userId,
+    });
+
+    const c = await cookies();
+    c.set("force-refresh", JSON.stringify(Math.random()));
+
+    return {success: true};
+  } catch (error) {
+    console.error("Error creating folder:", error);
+    return {error: "Failed to create folder"};
+  }
 }
