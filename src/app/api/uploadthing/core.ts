@@ -32,11 +32,9 @@ export const ourFileRouter = {
       // If you throw, the user will not be able to upload
       if (!user.userId) throw new Error("Unauthorized");
 
-      const folder = await QUERIES.getFolderById(input.folderId);
+      const folder = await QUERIES.getFolderById(input.folderId, user.userId);
 
-      if (!folder) throw new Error("Folder not found");
-
-      if(folder.ownerId !== user.userId) throw new Error("Unauthorized");
+      if (!folder) throw new Error("Folder not found or unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: user.userId, parentId: input.folderId };

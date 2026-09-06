@@ -1,6 +1,6 @@
 "use server";
 
-import { MUTATIONS } from "./db/queries";
+import { MUTATIONS, QUERIES } from "./db/queries";
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
 import { files_table, folders_table } from "./db/schema";
@@ -82,6 +82,11 @@ export async function createFolder(name: string, parentId: number) {
 
   if (!name || name.trim() === "") {
     return {error: "Folder name is required"};
+  }
+
+  const parentFolder = await QUERIES.getFolderById(parentId, session.userId);
+  if (!parentFolder) {
+    return {error: "Parent folder not found or unauthorized"};
   }
 
   try {

@@ -5,28 +5,43 @@ import {files_table as filesSchema, folders_table as foldersSchema, type DB_File
 import { eq, and, isNull } from "drizzle-orm";
 
 export const QUERIES = {
-  getFolders: function(folderId: number){
+  getFolders: function(folderId: number, userId: string){
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.parent, folderId))//selecting where folder schema id is equal to folder id
+      .where(
+        and(
+          eq(foldersSchema.parent, folderId),
+          eq(foldersSchema.ownerId, userId)
+        )
+      )
       .orderBy(foldersSchema.id);
   },
-  getFiles: function(folderId: number){
+  getFiles: function(folderId: number, userId: string){
     return db
       .select()
       .from(filesSchema)
-      .where(eq(filesSchema.parent, folderId))
+      .where(
+        and(
+          eq(filesSchema.parent, folderId),
+          eq(filesSchema.ownerId, userId)
+        )
+      )
       .orderBy(filesSchema.id);
   },
-  getAllParentsForFolder: async function(folderId: number) {
+  getAllParentsForFolder: async function(folderId: number, userId: string) {
     const parents = [];
     let currentId: number | null = folderId;
     while (currentId !== null) {
       const folder = await db
         .select()
         .from(foldersSchema)
-        .where(eq(foldersSchema.id, currentId));
+        .where(
+          and(
+            eq(foldersSchema.id, currentId),
+            eq(foldersSchema.ownerId, userId)
+          )
+        );
 
       if (!folder[0]){
         throw new Error("Parent folder not found");
@@ -38,11 +53,15 @@ export const QUERIES = {
 
     return parents;
   },
-  getFolderById: async function (folderId: number) {
+  getFolderById: async function (folderId: number, userId?: string) {
+    const conditions = [eq(foldersSchema.id, folderId)];
+    if (userId) {
+      conditions.push(eq(foldersSchema.ownerId, userId));
+    }
     const folder = await db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.id, folderId));
+      .where(and(...conditions));
     return folder[0];
   },
 
