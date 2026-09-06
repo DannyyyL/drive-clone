@@ -170,7 +170,7 @@ SINGLESTORE_PORT=3333
 SINGLESTORE_USER=your_db_user
 SINGLESTORE_PASS=your_db_password
 SINGLESTORE_DB_NAME=your_db_name
-DATABASE_URL=mysql://user:pass@host:port/database
+DATABASE_URL=mysql://user:password@localhost:3306/database
 
 # UploadThing Storage
 UPLOADTHING_SECRET=sk_live_...
